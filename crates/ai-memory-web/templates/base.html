@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang="pt-BR" class="h-full">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,48 +10,48 @@
   <link rel="stylesheet" href="static/tailwind.css">
 </head>
 <body class="dashboard-shell">
-  <a id="skip-link" href="#main-content" class="skip-link">Skip to content</a>
-  <aside class="app-sidebar" id="app-navigation" aria-label="Workspace navigation">
-    <a href="." class="app-brand"><img src="static/logo.png" alt="" width="34" height="34"><span>ai-memory<small>AGENT WORKSPACE</small></span></a>
+  <a id="skip-link" href="#main-content" class="skip-link">Pular para o conteúdo</a>
+  <aside class="app-sidebar" id="app-navigation" aria-label="Navegação do workspace">
+    <a href="." class="app-brand"><img src="static/logo.png" alt="" width="34" height="34"><span>ai-memory<small>WORKSPACE DE AGENTES</small></span></a>
     <p class="nav-label">WORKSPACE</p>
-    <nav aria-label="Main" class="app-nav">
-      <a href="." data-nav="projects"><span aria-hidden="true">▦</span>Projects</a>
-      <a href="inbox" data-nav="inbox"><span aria-hidden="true">✉</span>Inbox <span id="inbox-pending-count" class="nav-message-count" hidden aria-hidden="true"></span></a>
-      <div id="inbox-notifications" class="nav-inbox-notifications" hidden><p id="inbox-notification-summary"></p><ul id="inbox-notification-projects" aria-label="Projects with pending messages"></ul></div>
+    <nav aria-label="Principal" class="app-nav">
+      <a href="." data-nav="projects"><span aria-hidden="true">▦</span>Projetos</a>
+      <a href="inbox" data-nav="inbox"><span aria-hidden="true">✉</span>Caixa de entrada <span id="inbox-pending-count" class="nav-message-count" hidden aria-hidden="true"></span></a>
+      <div id="inbox-notifications" class="nav-inbox-notifications" hidden><p id="inbox-notification-summary"></p><ul id="inbox-notification-projects" aria-label="Projetos com mensagens pendentes"></ul></div>
       <span id="inbox-notification-status" class="sr-only" role="status" aria-live="polite"></span>
       <a href="workstreams" data-nav="workstreams" {% block nav_workstreams_current %}{% endblock %}><span aria-hidden="true">⑂</span>Workstreams</a>
-      <a href="search" data-nav="search"><span aria-hidden="true">⌕</span>Search memory</a>
-      <a href="graph" data-nav="graph" {% block nav_graph_current %}{% endblock %}><span aria-hidden="true">⌘</span>Knowledge graph</a>
-      <p class="nav-label">OBSERVE &amp; IMPROVE</p>
-      <a href="pending" data-nav="pending" {% block nav_pending_current %}{% endblock %}><span aria-hidden="true">☷</span>Learning review</a>
-      <a href="health" data-nav="health" {% block nav_health_current %}{% endblock %}><span aria-hidden="true">⌁</span>Server health</a>
-      <p class="nav-label">RESOURCES</p>
-      <a href="docs" data-nav="docs" {% block nav_docs_current %}{% endblock %}><span aria-hidden="true">▤</span>Documentation</a>
+      <a href="search" data-nav="search"><span aria-hidden="true">⌕</span>Buscar na memória</a>
+      <a href="graph" data-nav="graph" {% block nav_graph_current %}{% endblock %}><span aria-hidden="true">⌘</span>Grafo de conhecimento</a>
+      <p class="nav-label">OBSERVAR E MELHORAR</p>
+      <a href="pending" data-nav="pending" {% block nav_pending_current %}{% endblock %}><span aria-hidden="true">☷</span>Revisão de aprendizado</a>
+      <a href="health" data-nav="health" {% block nav_health_current %}{% endblock %}><span aria-hidden="true">⌁</span>Saúde do servidor</a>
+      <p class="nav-label">RECURSOS</p>
+      <a href="docs" data-nav="docs" {% block nav_docs_current %}{% endblock %}><span aria-hidden="true">▤</span>Documentação</a>
       <a href="docs/changelog" data-nav="changelog" {% block nav_changelog_current %}{% endblock %}><span aria-hidden="true">↻</span>Changelog</a>
     </nav>
-    <div class="nav-bottom"><span class="nav-orbit" aria-hidden="true">◈</span><strong>Context that stays.<small>Across agents. Across sessions.</small></strong></div>
+    <div class="nav-bottom"><span class="nav-orbit" aria-hidden="true">◈</span><strong>Contexto que permanece.<small>Entre agentes. Entre sessões.</small></strong></div>
   </aside>
-  <button class="nav-backdrop" id="nav-backdrop" aria-label="Close navigation" hidden></button>
+  <button class="nav-backdrop" id="nav-backdrop" aria-label="Fechar navegação" hidden></button>
   <header class="app-topbar">
     <div class="app-topbar-content">
-      <button class="menu-button" id="nav-toggle" aria-controls="app-navigation" aria-expanded="false" aria-label="Open navigation">☰</button>
-      <span class="topbar-caption">Workspace <span aria-hidden="true">/</span> <strong>Agent operations</strong></span>
+      <button class="menu-button" id="nav-toggle" aria-controls="app-navigation" aria-expanded="false" aria-label="Abrir navegação">☰</button>
+      <span class="topbar-caption">Workspace <span aria-hidden="true">/</span> <strong>Operações de agentes</strong></span>
       <div class="topbar-spacer"></div>
       {% block header_actions %}
       {% block header_search %}
-      <form action="search" method="get" class="topbar-search"><label for="header-search" class="sr-only">Search pages</label><input id="header-search" name="q" type="search" placeholder="Search memory…"><span aria-hidden="true">⌕</span></form>
+      <form action="search" method="get" class="topbar-search"><label for="header-search" class="sr-only">Buscar páginas</label><input id="header-search" name="q" type="search" placeholder="Buscar na memória…"><span aria-hidden="true">⌕</span></form>
       {% endblock %}
-      <button type="button" id="ai-memory-logout" class="quiet-button">Log out</button>
+      <button type="button" id="ai-memory-logout" class="quiet-button">Sair</button>
       {% endblock %}
-      <div class="theme-switch" role="group" aria-label="Color theme">
-        <button type="button" data-theme-choice="light" aria-pressed="false" title="Light theme">Light</button>
-        <button type="button" data-theme-choice="dark" aria-pressed="false" title="Dark theme">Dark</button>
-        <button type="button" data-theme-choice="system" aria-pressed="false" title="Follow system theme">System</button>
+      <div class="theme-switch" role="group" aria-label="Tema de cores">
+        <button type="button" data-theme-choice="light" aria-pressed="false" title="Tema claro">Claro</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false" title="Tema escuro">Escuro</button>
+        <button type="button" data-theme-choice="system" aria-pressed="false" title="Seguir o tema do sistema">Sistema</button>
       </div>
     </div>
   </header>
   <main id="main-content" tabindex="-1" class="app-content">{% block content %}{% endblock %}</main>
-  <footer class="app-footer"><span>ai-memory <span aria-hidden="true">·</span> Project memory &amp; agent operations</span>{% block footer_version %}<span>v{{ crate::templates::VERSION }}</span>{% endblock %}</footer>
+  <footer class="app-footer"><span>ai-memory <span aria-hidden="true">·</span> Memória de projetos e operações de agentes</span>{% block footer_version %}<span>v{{ crate::templates::VERSION }}</span>{% endblock %}</footer>
   <script>
   (function(){
     document.getElementById("skip-link").href=location.href.split("#")[0]+"#main-content";

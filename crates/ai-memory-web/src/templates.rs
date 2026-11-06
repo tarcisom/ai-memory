@@ -128,7 +128,7 @@ pub(crate) fn agent_label(kind: ai_memory_core::AgentKind) -> &'static str {
         AgentKind::Cline => "Cline",
         AgentKind::QwenCode => "Qwen Code",
         AgentKind::Qoder => "Qoder",
-        AgentKind::Other => "Other",
+        AgentKind::Other => "Outro",
     }
 }
 
@@ -165,26 +165,26 @@ pub(crate) fn humanize(iso: &str) -> String {
     let diff_us = now.as_microsecond() - then.as_microsecond();
     let secs = diff_us.abs() / 1_000_000;
     if secs < 60 {
-        return "just now".to_owned();
+        return "agora mesmo".to_owned();
     }
     let mins = secs / 60;
     if mins < 60 {
-        return format!("{mins} minute{} ago", if mins == 1 { "" } else { "s" });
+        return format!("há {mins} minuto{}", if mins == 1 { "" } else { "s" });
     }
     let hours = mins / 60;
     if hours < 24 {
-        return format!("{hours} hour{} ago", if hours == 1 { "" } else { "s" });
+        return format!("há {hours} hora{}", if hours == 1 { "" } else { "s" });
     }
     let days = hours / 24;
     if days < 30 {
-        return format!("{days} day{} ago", if days == 1 { "" } else { "s" });
+        return format!("há {days} dia{}", if days == 1 { "" } else { "s" });
     }
     let months = days / 30;
     if months < 12 {
-        return format!("{months} month{} ago", if months == 1 { "" } else { "s" });
+        return format!("há {months} {}", if months == 1 { "mês" } else { "meses" });
     }
     let years = months / 12;
-    format!("{years} year{} ago", if years == 1 { "" } else { "s" })
+    format!("há {years} ano{}", if years == 1 { "" } else { "s" })
 }
 
 /// Humanised session duration between two ISO-8601 timestamps, or `"open"`
@@ -193,7 +193,7 @@ pub(crate) fn humanize(iso: &str) -> String {
 #[must_use]
 pub(crate) fn duration_between(started: &str, ended: Option<&str>) -> String {
     let Some(ended) = ended else {
-        return "open".to_owned();
+        return "aberta".to_owned();
     };
     let (Ok(start), Ok(end)) = (
         started.parse::<jiff::Timestamp>(),

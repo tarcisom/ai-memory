@@ -133,12 +133,12 @@ fn row(label: &'static str, value: impl Into<String>) -> HealthRow {
 
 fn micros(us: Option<i64>) -> String {
     us.and_then(|us| jiff::Timestamp::from_microsecond(us).ok())
-        .map_or_else(|| "never".to_owned(), |ts| ts.to_string())
+        .map_or_else(|| "nunca".to_owned(), |ts| ts.to_string())
 }
 
 fn age(ms: Option<u64>) -> String {
     let Some(ms) = ms else {
-        return "n/a".to_owned();
+        return "n/d".to_owned();
     };
     let secs = ms / 1000;
     match secs {
@@ -163,10 +163,10 @@ fn provider_line(role: &ProviderRoleHealthSnapshot) -> String {
         out.push_str(&format!(" (dim {dim})"));
     }
     if let Some(at) = role.last_success_at {
-        out.push_str(&format!(" · last ok {at}"));
+        out.push_str(&format!(" · último ok {at}"));
     }
     if let Some(at) = role.last_error_at {
-        out.push_str(&format!(" · last error {at}"));
+        out.push_str(&format!(" · último erro {at}"));
         if let Some(status) = role.last_error_status {
             out.push_str(&format!(" (HTTP {status})"));
         }
@@ -177,22 +177,22 @@ fn provider_line(role: &ProviderRoleHealthSnapshot) -> String {
 fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
     let ingest = &s.ingest;
     let hooks = HealthSection {
-        title: "Hooks (since the server started)",
+        title: "Hooks (desde que o servidor iniciou)",
         rows: vec![
-            row("accepted", ingest.accepted.to_string()),
+            row("aceitos", ingest.accepted.to_string()),
             row(
-                "shed (429)",
+                "descartados (429)",
                 format!(
-                    "{} ({} saturated, {} rate-limited)",
+                    "{} ({} saturados, {} limitados por taxa)",
                     ingest.shed_saturated + ingest.shed_rate_limited,
                     ingest.shed_saturated,
                     ingest.shed_rate_limited
                 ),
             ),
             row(
-                "outcomes",
+                "resultados",
                 format!(
-                    "{} stored, {} replayed, {} resumed, {} ignored end, {} failed",
+                    "{} armazenados, {} reproduzidos, {} retomados, {} fins ignorados, {} falhos",
                     ingest.stored,
                     ingest.replayed,
                     ingest.resumed,
@@ -201,9 +201,9 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
                 ),
             ),
             row(
-                "dropped",
+                "rejeitados",
                 format!(
-                    "{} capture policy, {} unauthorized, {} collision, {} invalid",
+                    "{} política de captura, {} não autorizados, {} colisão, {} inválidos",
                     ingest.dropped_by_policy,
                     ingest.dropped_unauthorized,
                     ingest.dropped_collision,
@@ -211,7 +211,7 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
                 ),
             ),
             row(
-                "last write",
+                "última gravação",
                 micros(
                     ingest
                         .last_persisted_ms
@@ -223,22 +223,22 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
     };
     let process = &s.process;
     let local = HealthSection {
-        title: "Writer, spool and recovery",
+        title: "Gravador, spool e recuperação",
         rows: vec![
             row(
-                "write queue",
+                "fila de gravação",
                 process.write_queue.map_or_else(
-                    || "unknown".to_owned(),
+                    || "desconhecida".to_owned(),
                     |(queued, capacity)| format!("{queued}/{capacity}"),
                 ),
             ),
             row(
-                "hook spool",
+                "spool de hooks",
                 process.spool.map_or_else(
-                    || "not visible to this server".to_owned(),
+                    || "não visível para este servidor".to_owned(),
                     |spool| {
                         format!(
-                            "{} pending of {} (oldest {}, {} retries)",
+                            "{} pendentes de {} (mais antigo {}, {} tentativas)",
                             spool.pending,
                             spool.capacity,
                             age(spool.oldest_age_ms),
@@ -248,15 +248,15 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
                 ),
             ),
             row(
-                "recovery journal",
+                "diário de recuperação",
                 process.journal.map_or_else(
-                    || "not visible to this server".to_owned(),
+                    || "não visível para este servidor".to_owned(),
                     |journal| {
                         if journal.unreadable {
-                            "unreadable".to_owned()
+                            "ilegível".to_owned()
                         } else {
                             format!(
-                                "{} pending ({} degraded, {} finish-failed)",
+                                "{} pendentes ({} degradados, {} falha na finalização)",
                                 journal.pending, journal.degraded, journal.finish_failed
                             )
                         }
@@ -267,18 +267,18 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
     };
     let queue = &s.consolidation;
     let consolidation = HealthSection {
-        title: "Consolidation",
+        title: "Consolidação",
         rows: vec![
-            row("last completed", micros(queue.last_completed_at_us)),
+            row("última concluída", micros(queue.last_completed_at_us)),
             row(
-                "queue",
+                "fila",
                 format!(
-                    "{} pending, {} running, {} completed, {} failed",
+                    "{} pendentes, {} em execução, {} concluídas, {} falhas",
                     queue.pending, queue.running, queue.completed, queue.failed
                 ),
             ),
             row(
-                "oldest pending since",
+                "pendente mais antiga desde",
                 micros(queue.oldest_pending_requested_at_us),
             ),
         ],
@@ -287,17 +287,17 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
         row(
             "embedder",
             s.embedder.as_ref().map_or_else(
-                || "none (FTS5 + entity + graph only)".to_owned(),
+                || "nenhum (só FTS5 + entidades + grafo)".to_owned(),
                 |e| format!("{}/{} (dim {})", e.provider, e.model, e.dim),
             ),
         ),
-        row("embedding provider", provider_line(&s.providers.embedding)),
-        row("llm provider", provider_line(&s.providers.llm)),
-        row("reranker", if rerank { "on" } else { "off" }),
+        row("provedor de embedding", provider_line(&s.providers.embedding)),
+        row("provedor de LLM", provider_line(&s.providers.llm)),
+        row("reranker", if rerank { "ligado" } else { "desligado" }),
         row(
-            "vectors",
+            "vetores",
             format!(
-                "{} rows; {} latest pages missing; {} unembeddable",
+                "{} linhas; {} páginas recentes sem vetor; {} não vetorizáveis",
                 s.derived.embedding_rows,
                 s.derived.latest_pages_missing_embeddings,
                 s.derived.latest_pages_unembeddable
@@ -306,24 +306,24 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
     ];
     for triple in &s.derived.embedding_triples {
         models.push(row(
-            "stored triple",
+            "tripla armazenada",
             format!(
-                "{}/{} dim {}: {} rows",
+                "{}/{} dim {}: {} linhas",
                 triple.provider, triple.model, triple.dim, triple.count
             ),
         ));
     }
     let models = HealthSection {
-        title: "Embedder and models",
+        title: "Embedder e modelos",
         rows: models,
     };
     let index = HealthSection {
-        title: "Index and storage",
+        title: "Índice e armazenamento",
         rows: vec![
             row(
                 "fts",
                 format!(
-                    "pages {}/{}; observations {}/{}",
+                    "páginas {}/{}; observações {}/{}",
                     s.derived.pages_fts_rows,
                     s.derived.pages_rows,
                     s.derived.observations_fts_rows,
@@ -331,9 +331,9 @@ fn sections(s: &HealthSnapshot, rerank: bool) -> Vec<HealthSection> {
                 ),
             ),
             row(
-                "database",
+                "banco de dados",
                 format!(
-                    "{} bytes, {} reclaimable",
+                    "{} bytes, {} recuperáveis",
                     s.storage.database_bytes, s.storage.reclaimable_bytes
                 ),
             ),

@@ -319,6 +319,6 @@ pub(crate) fn refusal_response(refusal: &ai_memory_store::ScopeResolutionError) 
 pub(crate) fn not_found_response() -> Response {
     let html = NotFoundView {}
         .render()
-        .unwrap_or_else(|_| "<h1>Not found</h1>".to_owned());
+        .unwrap_or_else(|_| "<h1>Não encontrado</h1>".to_owned());
     (StatusCode::NOT_FOUND, Html(html)).into_response()
 }

@@ -81,11 +81,11 @@ async fn render_global(
         workspace: String::new(),
         project: String::new(),
         project_href: String::new(),
-        heading: "Link graph".into(),
-        blurb: "Resolved wikilinks whose endpoints sit in different projects. \
-                An edge is shown only when both ends are readable."
+        heading: "Grafo de links".into(),
+        blurb: "Wikilinks resolvidos cujas pontas estão em projetos diferentes. \
+                Uma aresta só aparece quando as duas pontas são legíveis."
             .into(),
-        empty_message: "No cross-project links yet.".into(),
+        empty_message: "Ainda não há links entre projetos.".into(),
         truncated: false,
         shown: svg_nodes.len(),
         node_cap: 0,
@@ -119,9 +119,9 @@ fn render_project(
         workspace: workspace.to_owned(),
         project: project.to_owned(),
         project_href: project_href(workspace, project),
-        heading: format!("{workspace}/{project} link graph"),
-        blurb: "Latest pages in this project and the resolved wikilinks between them.".into(),
-        empty_message: "No pages in this project yet.".into(),
+        heading: format!("Grafo de links de {workspace}/{project}"),
+        blurb: "Páginas mais recentes deste projeto e os wikilinks resolvidos entre elas.".into(),
+        empty_message: "Ainda não há páginas neste projeto.".into(),
         truncated: graph.truncated,
         shown: graph.nodes.len(),
         node_cap: PROJECT_LINK_GRAPH_MAX_NODES,

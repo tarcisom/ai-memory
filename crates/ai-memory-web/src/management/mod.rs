@@ -90,7 +90,10 @@ async fn page(
         view.username = me.username.clone();
         view.admin = me.admin;
         if screen == Screen::Users && !me.admin {
-            return failure(StatusCode::FORBIDDEN, "Admin access required".into());
+            return failure(
+                StatusCode::FORBIDDEN,
+                "Acesso de administrador necessário".into(),
+            );
         }
         if let Err(response) = view.load(&client, &me, selection).await {
             return response;

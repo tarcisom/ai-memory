@@ -1,0 +1,76 @@
+# Fork da Nexplan: gera a imagem Docker e o binário Linux com a interface em português (branch pt-br).
+# Publica em ghcr.io/tarcisom/ai-memory:<tag> — o hub (VM 192.168.67.204) usa essa imagem no lugar da oficial.
+name: imagem pt-br
+
+on:
+  push:
+    branches: [pt-br]
+    tags: ['v*-ptbr']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  testes:
+    name: testes da interface web (crate ai-memory-web)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: '1.95'
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test --locked -p ai-memory-web
+      - run: cargo test --locked -p ai-memory-cli --lib
+
+  imagem:
+    needs: testes
+    name: imagem Docker (amd64) + binário Linux
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tags da imagem
+        id: meta
+        run: |
+          VER=$(grep -m1 '^version' crates/ai-memory-cli/Cargo.toml | sed -E 's/.*"([^"]+)".*/\1/')
+          SHORT=${GITHUB_SHA::7}
+          echo "tags=ghcr.io/${{ github.repository }}:${VER}-ptbr,ghcr.io/${{ github.repository }}:${VER}-ptbr-${SHORT},ghcr.io/${{ github.repository }}:ptbr" >> "$GITHUB_OUTPUT"
+          echo "versao=${VER}" >> "$GITHUB_OUTPUT"
+      - name: Build e push (compila do fonte, alvo runtime-source)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          target: runtime-source
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Extrai o binário Linux da imagem (para a VM hermes e instalações nativas)
+        run: |
+          IMG=ghcr.io/${{ github.repository }}:ptbr
+          docker pull "$IMG"
+          C=$(docker create "$IMG")
+          mkdir -p dist
+          docker cp "$C:/usr/local/bin/ai-memory" dist/ai-memory
+          docker rm "$C" >/dev/null
+          (cd dist && tar -czf ai-memory-linux-x86_64-ptbr.tar.gz ai-memory && sha256sum ai-memory-linux-x86_64-ptbr.tar.gz > ai-memory-linux-x86_64-ptbr.tar.gz.sha256)
+          ls -la dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-memory-linux-x86_64-ptbr-${{ steps.meta.outputs.versao }}
+          path: |
+            dist/ai-memory-linux-x86_64-ptbr.tar.gz
+            dist/ai-memory-linux-x86_64-ptbr.tar.gz.sha256
+          retention-days: 90

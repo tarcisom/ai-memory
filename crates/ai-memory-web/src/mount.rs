@@ -860,12 +860,12 @@ mod tests {
         let body = body_of(&router).await;
         assert!(body.contains("okf-dialog-overlay"));
         assert!(body.contains("upgraded to the 2.0 format"));
-        assert!(body.contains("Do not show me again"));
+        assert!(body.contains("Não mostrar novamente"));
         assert!(
             body.contains("ai-memory-okf-dialog-2026-09-01T00:00:00Z"),
             "dismissal key must be migration-stamped"
         );
-        assert!(body.contains("Unpack the archive"));
+        assert!(body.contains("Descompacte o arquivo"));
         // Keyboard contract for the aria-modal dialog.
         assert!(
             body.contains(r#"id="okf-dialog-close" type="button""#),

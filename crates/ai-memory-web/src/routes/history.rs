@@ -84,7 +84,7 @@ pub(crate) async fn load(
         .await
         .map_err(HistoryError::Scope)?;
     let path = PagePath::new(path)
-        .map_err(|e| HistoryError::BadRequest(format!("invalid path: {e}")))?
+        .map_err(|e| HistoryError::BadRequest(format!("caminho inválido: {e}")))?
         .as_str()
         .to_owned();
     let parse = |raw: &Option<String>, name: &str| -> Result<Option<PageId>, HistoryError> {
@@ -93,7 +93,9 @@ pub(crate) async fn load(
             Some(raw) => raw
                 .parse::<PageId>()
                 .map(Some)
-                .map_err(|_| HistoryError::BadRequest(format!("invalid {name} version id"))),
+                .map_err(|_| {
+                    HistoryError::BadRequest(format!("id de versão inválido em {name}"))
+                }),
         }
     };
     let from_id = parse(&query.from, "from")?;

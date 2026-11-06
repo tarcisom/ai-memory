@@ -58,7 +58,7 @@ pub(crate) async fn handler(
         Err(refusal) => return super::page::refusal_response(&refusal),
     };
     let Ok(session_id) = raw_session.parse::<SessionId>() else {
-        return (StatusCode::BAD_REQUEST, "invalid session id").into_response();
+        return (StatusCode::BAD_REQUEST, "id de sessão inválido").into_response();
     };
     let internal = |error: ai_memory_store::StoreError| {
         tracing::error!(%error, "web session read failed");

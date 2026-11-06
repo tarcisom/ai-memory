@@ -29,198 +29,198 @@ macro_rules! document {
 pub(crate) const DOCUMENTS: &[Document] = &[
     document!(
         "features",
-        "Features & activation",
-        "What each feature does, prerequisites, how to enable it, and how to verify capture and access.",
-        "Start here",
+        "Recursos e ativação",
+        "O que cada recurso faz, pré-requisitos, como habilitar e como verificar captura e acesso.",
+        "Comece aqui",
         "docs/features.md"
     ),
     document!(
         "install",
-        "Installation & agent setup",
-        "Native and Docker setup, client hooks, MCP, supported harnesses, and upgrades.",
-        "Start here",
+        "Instalação e configuração de agentes",
+        "Instalação nativa e em Docker, hooks de cliente, MCP, harnesses suportados e atualizações.",
+        "Comece aqui",
         "docs/install.md"
     ),
     document!(
         "usage",
-        "Usage & dashboard",
-        "Recall, handoffs, recovery, live token accounting, agent sessions, and the web inbox.",
-        "Start here",
+        "Uso e painel",
+        "Recall, handoffs, recuperação, contabilidade de tokens ao vivo, sessões de agentes e a caixa de entrada web.",
+        "Comece aqui",
         "docs/usage.md"
     ),
     document!(
         "cookbook",
-        "Task cookbook",
-        "Practical recipes for capturing, recalling, importing, and coordinating work.",
-        "Start here",
+        "Livro de receitas",
+        "Receitas práticas para capturar, recuperar, importar e coordenar trabalho.",
+        "Comece aqui",
         "docs/cookbook.md"
     ),
     document!(
         "agent-messaging",
-        "Agent inbox & messaging",
-        "Shared and directed messages, browser sending, recipient identity, and claim-once delivery.",
-        "Agent workflows",
+        "Caixa de entrada e mensagens de agentes",
+        "Mensagens compartilhadas e direcionadas, envio pelo navegador, identidade do destinatário e entrega com reivindicação única.",
+        "Fluxos de agentes",
         "docs/agent-messaging.md"
     ),
     document!(
         "managed-workstreams",
-        "Managed sessions & workstreams",
-        "Launch and resume agents with ai-memory run, profiles, auto-wiring, and cross-harness continuity.",
-        "Agent workflows",
+        "Sessões gerenciadas e workstreams",
+        "Lance e retome agentes com ai-memory run, perfis, conexão automática e continuidade entre harnesses.",
+        "Fluxos de agentes",
         "docs/managed-workstreams.md"
     ),
     document!(
         "marker-file",
-        "Project routing & capture privacy",
-        "Configure workspace/project identity and capture exclusions in .ai-memory.toml.",
-        "Agent workflows",
+        "Roteamento de projetos e privacidade da captura",
+        "Configure a identidade workspace/projeto e as exclusões de captura no .ai-memory.toml.",
+        "Fluxos de agentes",
         "docs/marker-file.md"
     ),
     document!(
         "programmatic-memory",
-        "Programmatic memory",
-        "Use the public MCP protocol from applications and orchestrators.",
-        "Agent workflows",
+        "Memória programática",
+        "Use o protocolo MCP público a partir de aplicações e orquestradores.",
+        "Fluxos de agentes",
         "docs/programmatic-memory.md"
     ),
     document!(
         "external-lifecycle",
-        "External lifecycle capture",
-        "Connect orchestrators and the relay through the bounded lifecycle ingestion API.",
-        "Agent workflows",
+        "Captura externa de ciclo de vida",
+        "Conecte orquestradores e o relay pela API limitada de ingestão de ciclo de vida.",
+        "Fluxos de agentes",
         "docs/external-lifecycle.md"
     ),
     document!(
         "llm-providers",
-        "LLM & embedding providers",
-        "Enable optional provider-backed consolidation, embeddings, authentication, and fallback chains.",
-        "Learning & retrieval",
+        "Provedores de LLM e embedding",
+        "Habilite consolidação opcional com provedor, embeddings, autenticação e cadeias de fallback.",
+        "Aprendizado e recuperação",
         "docs/llm-providers.md"
     ),
     document!(
         "llm-provider-fallback",
-        "Provider fallback",
-        "Configure an ordered provider chain and understand which failures may trigger fallback.",
-        "Learning & retrieval",
+        "Fallback de provedor",
+        "Configure uma cadeia ordenada de provedores e entenda quais falhas podem acionar o fallback.",
+        "Aprendizado e recuperação",
         "docs/llm-provider-fallback.md"
     ),
     document!(
         "okf",
-        "Portable wiki format",
-        "Understand Markdown frontmatter, portable wiki layout, import, and format compatibility.",
-        "Agent workflows",
+        "Formato portável de wiki",
+        "Entenda o frontmatter Markdown, o layout portável da wiki, a importação e a compatibilidade de formato.",
+        "Fluxos de agentes",
         "docs/okf.md"
     ),
     document!(
         "session-management",
-        "Session management API",
-        "Build and enable owned-session inspection and purge routes with human authentication.",
-        "Access & integration",
+        "API de gerenciamento de sessões",
+        "Compile e habilite as rotas de inspeção e purga de sessões próprias com autenticação humana.",
+        "Acesso e integração",
         "docs/session-management.md"
     ),
     document!(
         "self-service-keys",
-        "Self-service API keys",
-        "Build and enable the optional API for users to manage their own native credentials.",
-        "Access & integration",
+        "Chaves de API em autoatendimento",
+        "Compile e habilite a API opcional para usuários gerenciarem suas próprias credenciais nativas.",
+        "Acesso e integração",
         "docs/self-service-keys.md"
     ),
     document!(
         "auto-improvement-loop",
-        "Learning & proposal review",
-        "Current learning behavior, approval settings, scheduler prerequisites, and detailed design history.",
-        "Learning & retrieval",
+        "Aprendizado e revisão de propostas",
+        "Comportamento atual do aprendizado, configurações de aprovação, pré-requisitos do agendador e histórico detalhado de design.",
+        "Aprendizado e recuperação",
         "docs/auto-improvement-loop.md"
     ),
     document!(
         "architecture",
-        "Configuration & architecture",
-        "The complete configuration reference, storage, retrieval signals, APIs, and operating boundaries.",
-        "Operations",
+        "Configuração e arquitetura",
+        "A referência completa de configuração, armazenamento, sinais de recuperação, APIs e limites de operação.",
+        "Operação",
         "docs/ARCHITECTURE.md"
     ),
     document!(
         "diagnostics",
-        "Diagnostics & health",
-        "Inspect capture, providers, logging, and server health when a feature is not reporting data.",
-        "Operations",
+        "Diagnóstico e saúde",
+        "Inspecione captura, provedores, logs e saúde do servidor quando um recurso não estiver reportando dados.",
+        "Operação",
         "docs/diagnostics.md"
     ),
     document!(
         "lifecycle-ops",
-        "Backup, recovery & lifecycle",
-        "Online backups, restore requirements, retention, moves, and scoped lifecycle operations.",
-        "Operations",
+        "Backup, recuperação e ciclo de vida",
+        "Backups online, requisitos de restauração, retenção, movimentações e operações de ciclo de vida por escopo.",
+        "Operação",
         "docs/lifecycle-ops.md"
     ),
     document!(
         "deploy",
-        "Deployment",
-        "Native and container deployment, environment settings, and persistent storage.",
-        "Operations",
+        "Implantação",
+        "Implantação nativa e em contêiner, variáveis de ambiente e armazenamento persistente.",
+        "Operação",
         "docs/deploy.md"
     ),
     document!(
         "https-via-proxy",
-        "HTTPS & reverse proxy",
-        "Configure TLS and proxy deployment while retaining authentication and host checks.",
-        "Operations",
+        "HTTPS e proxy reverso",
+        "Configure TLS e implantação atrás de proxy mantendo a autenticação e as verificações de host.",
+        "Operação",
         "docs/https-via-proxy.md"
     ),
     document!(
         "management-ui",
-        "Management console",
-        "Build and enable the optional console, human login, session management, and API keys.",
-        "Access & integration",
+        "Console de gerenciamento",
+        "Compile e habilite o console opcional, login humano, gerenciamento de sessões e chaves de API.",
+        "Acesso e integração",
         "docs/management-ui.md"
     ),
     document!(
         "security",
-        "Security & authentication",
-        "Authentication, authorization, sanitization, and deployment security guidance.",
-        "Access & integration",
+        "Segurança e autenticação",
+        "Autenticação, autorização, sanitização e orientações de segurança para implantação.",
+        "Acesso e integração",
         "docs/security.md"
     ),
     document!(
         "sso",
-        "SSO & enterprise identity",
-        "OIDC device login, identity-provider configuration, and supported enterprise workflows.",
-        "Access & integration",
+        "SSO e identidade corporativa",
+        "Login de dispositivo OIDC, configuração do provedor de identidade e fluxos corporativos suportados.",
+        "Acesso e integração",
         "docs/sso.md"
     ),
     document!(
         "frontend-api",
-        "HTTP API & agent-readable docs",
-        "Read-only JSON endpoints, documentation access, custom frontends, and URL prefixes.",
-        "Access & integration",
+        "API HTTP e docs legíveis por agentes",
+        "Endpoints JSON somente leitura, acesso à documentação, frontends personalizados e prefixos de URL.",
+        "Acesso e integração",
         "docs/frontend-api.md"
     ),
     document!(
         "changelog",
         "Changelog",
-        "Unreleased changes and the current major release history, bundled with this build.",
-        "Release history",
+        "Mudanças não lançadas e o histórico da versão principal atual, embutidos nesta build.",
+        "Histórico de versões",
         "CHANGELOG.md"
     ),
     document!(
         "changelog-2x",
         "Changelog · 2.x",
-        "Archived releases from the 2.x series.",
-        "Release history",
+        "Versões arquivadas da série 2.x.",
+        "Histórico de versões",
         "docs/changelog/2.x.md"
     ),
     document!(
         "changelog-1x",
         "Changelog · 1.x",
-        "Archived releases from the 1.x series.",
-        "Release history",
+        "Versões arquivadas da série 1.x.",
+        "Histórico de versões",
         "docs/changelog/1.x.md"
     ),
     document!(
         "changelog-0x",
         "Changelog · 0.x",
-        "Archived releases from the 0.x series.",
-        "Release history",
+        "Versões arquivadas da série 0.x.",
+        "Histórico de versões",
         "docs/changelog/0.x.md"
     ),
 ];

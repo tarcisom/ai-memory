@@ -219,8 +219,8 @@ async fn operations_page_lists_lifecycle_state_without_host_or_transcript_secret
     let (status, headers, body) = get(app(&fixture, AuthLevel::Root), true).await;
     assert_eq!(status, StatusCode::OK, "{body}");
     assert_eq!(headers.get(header::CACHE_CONTROL).unwrap(), "no-store");
-    assert!(body.contains("Completed"), "{body}");
-    assert!(body.contains("Active"), "{body}");
+    assert!(body.contains("Concluído"), "{body}");
+    assert!(body.contains("Ativo"), "{body}");
     assert!(body.contains("default/complete"), "{body}");
     assert!(body.contains("default/live"), "{body}");
     assert!(

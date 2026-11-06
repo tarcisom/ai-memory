@@ -30,10 +30,10 @@ const RULES_PREFIX: &str = "_rules/";
 
 /// Sort orders the page offers, as `(value, label)`. The first is the default.
 const SORTS: [(&str, &str); 4] = [
-    (SORT_PROJECT, "Project, then staged date"),
-    (SORT_CONFIDENCE_ASC, "Confidence, low first"),
-    (SORT_CONFIDENCE_DESC, "Confidence, high first"),
-    (SORT_STAGED_DESC, "Staged, newest first"),
+    (SORT_PROJECT, "Projeto, depois data de preparação"),
+    (SORT_CONFIDENCE_ASC, "Confiança, menor primeiro"),
+    (SORT_CONFIDENCE_DESC, "Confiança, maior primeiro"),
+    (SORT_STAGED_DESC, "Preparação, mais recente primeiro"),
 ];
 const SORT_PROJECT: &str = "project";
 const SORT_CONFIDENCE_ASC: &str = "confidence-asc";
@@ -94,7 +94,7 @@ pub(crate) async fn handler(
     let total: u64 = scopes.iter().map(|scope| scope.pending).sum();
     let mut projects = vec![SelectOption {
         value: String::new(),
-        label: format!("All projects ({total})"),
+        label: format!("Todos os projetos ({total})"),
         selected: filter.is_none(),
     }];
     projects.extend(scopes.iter().map(|scope| SelectOption {

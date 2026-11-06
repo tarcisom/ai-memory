@@ -97,7 +97,7 @@ async fn contextual_states_report_effective_configuration_and_mask_admin_setting
             .unwrap()
     };
     assert_eq!(state("learning"), "Unavailable without LLM");
-    assert_eq!(state("retention"), "Disabled");
+    assert_eq!(state("retention"), "Desabilitada");
     assert_eq!(state("embeddings"), "Not configured");
     assert_eq!(state("external-clients"), "Client setup unknown");
     for level in [AuthLevel::User, AuthLevel::Anonymous] {
@@ -110,7 +110,7 @@ async fn contextual_states_report_effective_configuration_and_mask_admin_setting
             .iter()
             .find(|v| v["id"] == "learning")
             .unwrap();
-        assert_eq!(learning["state"], "Restricted");
+        assert_eq!(learning["state"], "Restrito");
         assert!(
             !learning.to_string().contains("without LLM"),
             "Mask detail as well as the badge"
@@ -122,7 +122,7 @@ async fn contextual_states_report_effective_configuration_and_mask_admin_setting
     assert!(html.contains("Next step:"));
     let app = mounted(&store, wiki.clone(), None);
     let (_, body) = get(&app, "/api/v1/docs/features/status", AuthLevel::Root, None).await;
-    assert!(body.contains("Not reported"));
+    assert!(body.contains("Não informado"));
     assert!(
         !body.contains("Unavailable without LLM"),
         "An absent snapshot is not a disabled provider"
@@ -389,7 +389,7 @@ async fn contextual_page_sources_preserve_shared_pages_and_refuse_foreign_or_pri
     .await;
     assert_eq!(status, StatusCode::OK);
     assert!(html.contains("data-page-recall-trace"), "{html}");
-    assert!(html.contains("Recomputed now"));
+    assert!(html.contains("Recomputado agora"));
     assert!(!html.contains("FOREIGN_SECRET"));
     let (_, search) = get(
         &app,

@@ -37,7 +37,7 @@ const SNIPPET_CHARS: usize = 160;
 fn fmt_session_tokens(usage: Option<&ai_memory_store::SessionUsageView>) -> String {
     match usage {
         Some(u) => format!(
-            "{} in / {} out",
+            "{} entrada / {} saída",
             fmt_tokens(u.input_tokens),
             fmt_tokens(u.output_tokens)
         ),
@@ -377,14 +377,14 @@ async fn mailbox(
                     format!("{workspace}/{project}"),
                     Some(project_href(&workspace, &project)),
                 ),
-                None => ("a project you cannot read".to_owned(), None),
+                None => ("um projeto que você não pode ler".to_owned(), None),
             };
             MailboxRow {
                 subject: entry
                     .message
                     .subject
                     .filter(|subject| !subject.trim().is_empty())
-                    .unwrap_or_else(|| "(no subject)".to_owned()),
+                    .unwrap_or_else(|| "(sem assunto)".to_owned()),
                 nature: entry.message.nature.as_str(),
                 sender,
                 sender_href,

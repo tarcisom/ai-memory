@@ -102,7 +102,7 @@ pub(crate) async fn handler(
                 Some((workspace.to_owned(), project.to_owned()))
             }
             _ => {
-                return (StatusCode::BAD_REQUEST, "scope must be workspace/project")
+                return (StatusCode::BAD_REQUEST, "o escopo deve ser workspace/projeto")
                     .into_response();
             }
         },
@@ -115,7 +115,7 @@ pub(crate) async fn handler(
             _ => {
                 return (
                     StatusCode::BAD_REQUEST,
-                    "workspace and project must be provided together",
+                    "workspace e projeto devem ser informados juntos",
                 )
                     .into_response();
             }
@@ -133,7 +133,7 @@ pub(crate) async fn handler(
             None => {
                 return (
                     StatusCode::BAD_REQUEST,
-                    "tier must be working, episodic, semantic or procedural",
+                    "tier deve ser working, episodic, semantic ou procedural",
                 )
                     .into_response();
             }
@@ -319,11 +319,11 @@ pub(crate) async fn handler(
         streams_active: streams_active.join(", "),
         timings: timings.as_ref().map(timing_rows).unwrap_or_default(),
         embedder: state.recall.embedder.as_ref().map_or_else(
-            || "none".to_owned(),
+            || "nenhum".to_owned(),
             |e| format!("{} / {} (dim {})", e.provider(), e.model(), e.dim()),
         ),
         reranker: state.recall.rerank.as_ref().map_or_else(
-            || "none".to_owned(),
+            || "nenhum".to_owned(),
             |stage| format!("{} / {}", stage.reranker().name(), stage.reranker().model()),
         ),
         truncated,

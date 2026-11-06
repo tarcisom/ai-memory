@@ -18,7 +18,7 @@
     }); });
     document.querySelectorAll('input[autocomplete="new-password"]').forEach(function (input) {
       input.addEventListener("input", function () {
-        input.setCustomValidity(Array.from(input.value).length < input.minLength ? "Use at least " + input.minLength + " characters." : "");
+        input.setCustomValidity(Array.from(input.value).length < input.minLength ? "Use pelo menos " + input.minLength + " caracteres." : "");
       });
     });
     var issued = document.getElementById("issued-secret");

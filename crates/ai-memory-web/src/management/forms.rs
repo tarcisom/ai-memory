@@ -73,7 +73,7 @@ pub(super) async fn submit(
     if !same_origin(request.headers()) {
         return super::failure(
             StatusCode::FORBIDDEN,
-            "Cross-origin form request refused".into(),
+            "Requisição de formulário de outra origem recusada".into(),
         );
     }
     let headers = request.headers().clone();
@@ -97,7 +97,7 @@ pub(super) async fn submit(
             && command.action != Action::Password
             && command.action != Action::Logout
         {
-            return super::failure(StatusCode::FORBIDDEN, "Password change required".into());
+            return super::failure(StatusCode::FORBIDDEN, "Troca de senha obrigatória".into());
         }
         view.username = me.username;
         view.admin = me.admin;
@@ -107,7 +107,7 @@ pub(super) async fn submit(
     {
         return super::failure(
             StatusCode::BAD_REQUEST,
-            "Use at least 12 characters.".into(),
+            "Use pelo menos 12 caracteres.".into(),
         );
     }
     let (method, path, body, destination) = match command.target() {
@@ -144,9 +144,9 @@ pub(super) async fn submit(
         || !text(&reply.data, "token").is_empty()
     {
         view.secret_title = if reply.data["temporary_password"].is_string() {
-            "Temporary password"
+            "Senha temporária"
         } else {
-            "New MCP API key"
+            "Nova chave de API do MCP"
         }
         .into();
         view.secret = if reply.data["temporary_password"].is_string() {
@@ -160,7 +160,7 @@ pub(super) async fn submit(
             .as_array()
             .is_some_and(|a| !a.is_empty())
     {
-        super::failure(StatusCode::OK,"Database deletion completed, but some wiki files could not be removed. Ask an Admin to check the server logs.".into())
+        super::failure(StatusCode::OK,"A exclusão no banco de dados foi concluída, mas alguns arquivos da wiki não puderam ser removidos. Peça a um administrador para verificar os logs do servidor.".into())
     } else {
         let destination =
             if command.action == Action::Login && reply.data["must_change_password"] == true {
@@ -176,8 +176,8 @@ pub(super) async fn submit(
 impl Command {
     fn target(&self) -> Result<(&'static str, String, serde_json::Value, String), &'static str> {
         let user = crate::templates::encode_segment(&self.username);
-        let key = || self.credential.ok_or("Credential ID required");
-        let session = || self.session.ok_or("Session ID required");
+        let key = || self.credential.ok_or("ID da credencial obrigatório");
+        let session = || self.session.ok_or("ID da sessão obrigatório");
         Ok(match self.action {
             Action::Login => (
                 "POST",

@@ -607,7 +607,7 @@ async fn pending_page_counts_and_filters_projects_beyond_the_read_cap() {
 
     let (_, _, body) = get(app(&f, AuthLevel::Root), "/pending", false).await;
     assert!(
-        body.contains("All projects (502)"),
+        body.contains("Todos os projetos (502)"),
         "total must count every project"
     );
     assert!(body.contains("default/late (1)"));

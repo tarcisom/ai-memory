@@ -156,7 +156,7 @@ pub(crate) async fn view(
             search_href.push_str(&format!("&{key}={}", encode_segment(v)));
         }
     }
-    let mut recall_note=if query.is_empty(){"Opened directly: no retrieval query was supplied. A direct URL does not establish a retrieval reason."}else{"Search context is carried in the URL. Recompute explicitly to inspect the current ranker; configured embedding/reranking providers may be contacted."}.to_string();
+    let mut recall_note=if query.is_empty(){"Aberta diretamente: nenhuma consulta de recuperação foi informada. Uma URL direta não estabelece um motivo de recuperação."}else{"O contexto da busca vem na URL. Recompute explicitamente para inspecionar o ranqueador atual; os provedores de embedding/reranking configurados podem ser contatados."}.to_string();
     let mut trace = None;
     if !query.is_empty() && q.recall_explain.as_deref() == Some("1") {
         if global {
@@ -165,7 +165,7 @@ pub(crate) async fn view(
                 .search_pages_with_meta(query.clone(), limit + 1, None, viewer, filter)
                 .await
                 .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-            recall_note=match hits.iter().take(limit).position(|h|h.id==page_id){Some(i)=>format!("Recomputed now: cross-project FTS-only retrieval, position {}. This stream has no hybrid RRF explanation.",i+1),None=>"Recomputed now: this page is outside the current result window. It may have changed or expired.".into()};
+            recall_note=match hits.iter().take(limit).position(|h|h.id==page_id){Some(i)=>format!("Recomputado agora: recuperação entre projetos só por FTS, posição {}. Este fluxo não tem explicação híbrida por RRF.",i+1),None=>"Recomputado agora: esta página está fora da janela de resultados atual. Ela pode ter mudado ou expirado.".into()};
         } else {
             let result = crate::recall::search_scopes(
                 state,
@@ -185,13 +185,13 @@ pub(crate) async fn view(
                     break;
                 }
             }
-            recall_note=if trace.is_some(){"Recomputed now with the current index, permissions and configured providers. This is not a historical snapshot of the original search."}else{"Recomputed now: this page is outside the current result window. It may have changed or expired."}.into();
+            recall_note=if trace.is_some(){"Recomputado agora com o índice, as permissões e os provedores configurados atuais. Isto não é um retrato histórico da busca original."}else{"Recomputado agora: esta página está fora da janela de resultados atual. Ela pode ter mudado ou expirado."}.into();
         }
     }
     Ok(KnowledgeView {
         version: page_id.to_string(),
         expiry: meta.expires_at.clone().unwrap_or_else(|| {
-            "No recorded expiration; validity is not independently verified.".into()
+            "Sem expiração registrada; a validade não é verificada de forma independente.".into()
         }),
         sources: sources
             .into_iter()
@@ -206,12 +206,12 @@ pub(crate) async fn view(
                     .unwrap_or_default(),
                 label: s
                     .observation_id
-                    .map(|id| format!("Observation {id}"))
+                    .map(|id| format!("Observação {id}"))
                     .unwrap_or_else(|| {
                         s.session_id
-                            .map(|id| format!("Session {id}"))
+                            .map(|id| format!("Sessão {id}"))
                             .unwrap_or_else(|| {
-                                "Recorded citation; no verifiable source link".into()
+                                "Citação registrada; sem link de origem verificável".into()
                             })
                     }),
             })
@@ -233,9 +233,9 @@ pub(crate) async fn view(
                 href: page_href(&d.page.workspace, &d.page.project, &d.page.path),
                 title: format!("{}/{} · {}", d.page.workspace, d.page.project, d.page.title),
                 direction: if d.outgoing {
-                    "This page contradicts"
+                    "Esta página contradiz"
                 } else {
-                    "Contradicted by"
+                    "Contradita por"
                 },
             })
             .collect(),

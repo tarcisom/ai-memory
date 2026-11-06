@@ -576,13 +576,13 @@ async fn web_page_view_created_is_the_first_versions_date() {
     );
     assert_eq!(
         shown(&text, "Updated"),
-        "just now",
+        "agora mesmo",
         "Updated stays the latest version's date"
     );
     let text = get("/w/default/scratch/p/notes/single.md").await;
     assert_eq!(
         shown(&text, "Created"),
-        "just now",
+        "agora mesmo",
         "a single-version page keeps its own date"
     );
 
@@ -1496,7 +1496,7 @@ async fn api_search_rejects_partial_scope() {
     let json: Value = serde_json::from_slice(&body).unwrap();
     assert_eq!(
         json["error"],
-        "workspace and project must be provided together"
+        "workspace e projeto devem ser informados juntos"
     );
 }
 
@@ -2099,7 +2099,7 @@ async fn api_session_observations_reject_bad_params() {
     for (uri, needle) in [
         (
             "/workspaces/default/projects/scratch/sessions/not-a-uuid/observations".to_owned(),
-            "invalid session id",
+            "id de sessão inválido",
         ),
         (
             format!("{base}?kinds=user-prompt,bogus"),
@@ -3988,7 +3988,7 @@ async fn project_view_shows_session_token_usage() {
         "the session row must carry the agent badge"
     );
     assert!(
-        sessions.contains("12.3k in / 6.8k out"),
+        sessions.contains("12.3k entrada / 6.8k saída"),
         "the session row must show its own token usage"
     );
 }
@@ -4059,7 +4059,7 @@ async fn project_view_ranks_live_token_responses_and_flags_large_usage() {
         .next()
         .unwrap();
     assert!(panel.contains("Captured calls</span><strong>5</strong>"));
-    assert!(panel.contains("Above 3× average"));
+    assert!(panel.contains("Acima de 3× a média"));
     assert!(panel.contains("test-model"));
     assert!(panel.find("response-4").unwrap() < panel.find("response-0").unwrap());
     assert!(
@@ -4118,7 +4118,7 @@ async fn project_view_session_without_usage_shows_dash_not_zero() {
         "a session with no reported usage must show a dash"
     );
     assert!(
-        !sessions.contains("0 in / 0 out"),
+        !sessions.contains("0 entrada / 0 saída"),
         "must never show a zeroed total for an unreported session"
     );
 }
@@ -5349,7 +5349,7 @@ async fn web_mailbox_hides_restricted_sender_names_and_cards() {
     let (status, body) = get_text(&web, "/w/default/shared-tools", Some(bob)).await;
     assert_eq!(status, StatusCode::OK);
     assert!(body.contains("Rotate the shared token"), "{body}");
-    assert!(body.contains("a project you cannot read"), "{body}");
+    assert!(body.contains("um projeto que você não pode ler"), "{body}");
     assert!(!body.contains("acme-client-work"), "{body}");
     assert!(!body.contains("w/default/acme-client-work"), "{body}");
 
@@ -6345,7 +6345,7 @@ async fn search_page_scope_selector_round_trips_and_rejects_malformed_values() {
         "{unscoped}"
     );
     assert!(
-        unscoped.contains(r#"<option value="" selected>All projects"#),
+        unscoped.contains(r#"<option value="" selected>Todos os projetos"#),
         "{unscoped}"
     );
     // No scope: both projects, no chip.

@@ -753,7 +753,7 @@ async fn operations_browser_send_and_inbox_reads_preserve_pending_state() {
     let html = text(response).await;
     assert!(html.contains("Review &lt;script&gt;test&lt;/script&gt;"));
     assert!(!html.contains("Review <script>"));
-    assert!(html.contains("Queued"));
+    assert!(html.contains("Na fila"));
     assert!(html.contains("Codex"));
     assert!(html.contains("Please inspect the large context."));
     assert_eq!(

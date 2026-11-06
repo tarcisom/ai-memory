@@ -79,15 +79,15 @@ pub(crate) fn unified(old: &str, new: &str) -> Diff {
         return Diff::Same;
     }
     if old.len() > MAX_INPUT_BYTES || new.len() > MAX_INPUT_BYTES {
-        return Diff::TooLarge("a version is larger than the diff limit");
+        return Diff::TooLarge("uma das versões é maior que o limite do diff");
     }
     let a: Vec<&str> = old.lines().collect();
     let b: Vec<&str> = new.lines().collect();
     if a.len() > MAX_INPUT_LINES || b.len() > MAX_INPUT_LINES {
-        return Diff::TooLarge("a version has more lines than the diff limit");
+        return Diff::TooLarge("uma das versões tem mais linhas que o limite do diff");
     }
     let Some(ops) = edit_script(&a, &b) else {
-        return Diff::TooLarge("the versions differ in more lines than the diff limit");
+        return Diff::TooLarge("as versões diferem em mais linhas que o limite do diff");
     };
     if ops.iter().all(|op| *op == Op::Keep) {
         // Same lines, different line endings or trailing newline.

@@ -63,10 +63,10 @@ pub(crate) async fn handler(
 fn workstream_row(summary: OperationalWorkstreamSummary) -> WorkstreamRow {
     let status = summary.status.as_str().to_owned();
     let status_label = match summary.status {
-        WorkstreamOperationalStatus::Active => "Active",
-        WorkstreamOperationalStatus::Interrupted => "Interrupted",
-        WorkstreamOperationalStatus::Completed => "Completed",
-        WorkstreamOperationalStatus::Empty => "Empty",
+        WorkstreamOperationalStatus::Active => "Ativo",
+        WorkstreamOperationalStatus::Interrupted => "Interrompido",
+        WorkstreamOperationalStatus::Completed => "Concluído",
+        WorkstreamOperationalStatus::Empty => "Vazio",
     }
     .to_owned();
     WorkstreamRow {

@@ -112,7 +112,7 @@ fn selected<'a>(
         .collect();
     options.push(ReleaseOption {
         id: "all".into(),
-        label: "All entries in this series".into(),
+        label: "Todas as entradas desta série".into(),
         selected: id == "all",
     });
     Ok((body, id.into(), options))

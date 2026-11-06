@@ -70,7 +70,7 @@ pub(crate) async fn handler(
         _ => {
             return (
                 StatusCode::BAD_REQUEST,
-                "Select both workspace and project.",
+                "Selecione o workspace e o projeto.",
             )
                 .into_response();
         }
@@ -179,11 +179,11 @@ pub(crate) async fn handler(
                     m.origin.from_project_id.to_string(),
                 ))
                 .cloned()
-                .unwrap_or_else(|| "A project you cannot read".into());
+                .unwrap_or_else(|| "Um projeto que você não pode ler".into());
             let to = visible
                 .get(&(m.to_workspace_id.to_string(), m.to_project_id.to_string()))
                 .cloned()
-                .unwrap_or_else(|| "A project you cannot read".into());
+                .unwrap_or_else(|| "Um projeto que você não pode ler".into());
             let raw_subject = m.subject.clone().unwrap_or_default();
             MessageRow {
                 id: m.id.to_string(),
@@ -191,20 +191,20 @@ pub(crate) async fn handler(
                 subject: m
                     .subject
                     .filter(|s| !s.is_empty())
-                    .unwrap_or_else(|| "Untitled message".into()),
+                    .unwrap_or_else(|| "Mensagem sem título".into()),
                 body: m.body,
                 from,
                 to,
                 agent: m
                     .to_agent
                     .map(|a| agent_label(a).to_owned())
-                    .unwrap_or_else(|| "Any project agent".into()),
+                    .unwrap_or_else(|| "Qualquer agente do projeto".into()),
                 state: m.state.as_str().into(),
                 state_label: match m.state {
-                    MessageState::Pending => "Queued",
-                    MessageState::Claimed => "Collected",
-                    MessageState::Cancelled => "Cancelled",
-                    MessageState::Editing => "Editing",
+                    MessageState::Pending => "Na fila",
+                    MessageState::Claimed => "Coletada",
+                    MessageState::Cancelled => "Cancelada",
+                    MessageState::Editing => "Em edição",
                 },
                 when: humanize(&m.created_at.to_string()),
             }
@@ -302,7 +302,7 @@ async fn authorize_browser_write(
     if headers.get("x-ai-memory-ui").and_then(|h| h.to_str().ok()) != Some("1") {
         return Err(error(
             StatusCode::FORBIDDEN,
-            "Refresh the inbox and try again.",
+            "Recarregue a caixa de entrada e tente de novo.",
         ));
     }
     if let Some(origin) = headers.get("origin").and_then(|h| h.to_str().ok()) {
@@ -313,7 +313,7 @@ async fn authorize_browser_write(
         if authority.as_deref() != headers.get("host").and_then(|h| h.to_str().ok()) {
             return Err(error(
                 StatusCode::FORBIDDEN,
-                "Messages must be sent from this dashboard.",
+                "As mensagens precisam ser enviadas a partir deste painel.",
             ));
         }
     }
@@ -326,7 +326,7 @@ async fn authorize_browser_write(
     if distinguishes && level == AuthLevel::Anonymous {
         return Err(error(
             StatusCode::UNAUTHORIZED,
-            "Sign in to send a message.",
+            "Entre para enviar uma mensagem.",
         ));
     }
     if level
@@ -386,7 +386,7 @@ pub(crate) async fn send(
     };
     let agent = AgentKind::from_wire(&input.to_agent);
     if agent.as_str() != input.to_agent {
-        return error(StatusCode::BAD_REQUEST, "Select a registered agent.");
+        return error(StatusCode::BAD_REQUEST, "Selecione um agente registrado.");
     }
     let known = match state
         .reader
@@ -403,7 +403,7 @@ pub(crate) async fn send(
     if !known {
         return error(
             StatusCode::BAD_REQUEST,
-            "That agent has no registered session in the recipient project.",
+            "Esse agente não tem sessão registrada no projeto de destino.",
         );
     }
     if input.body.trim().is_empty()
@@ -412,7 +412,7 @@ pub(crate) async fn send(
     {
         return error(
             StatusCode::BAD_REQUEST,
-            "Enter a message up to 8,000 characters and a subject up to 200 characters.",
+            "Informe uma mensagem de até 8.000 caracteres e um assunto de até 200 caracteres.",
         );
     }
     let actor = actor.map_or_else(ActorContext::anonymous, |a| a.0);
@@ -439,14 +439,14 @@ pub(crate) async fn send(
         Err(ai_memory_wiki::WikiError::Store(ai_memory_store::StoreError::InvalidState(_))) => {
             error(
                 StatusCode::CONFLICT,
-                "This inbox is full. An agent must collect pending mail first.",
+                "Esta caixa de entrada está cheia. Um agente precisa coletar as mensagens pendentes primeiro.",
             )
         }
         Err(e) => {
             tracing::warn!(error=%e,"browser message refused");
             error(
                 StatusCode::FORBIDDEN,
-                "The message could not be queued. Check project access and message admission policy.",
+                "A mensagem não pôde ser enfileirada. Verifique o acesso ao projeto e a política de admissão de mensagens.",
             )
         }
     }
@@ -481,7 +481,7 @@ async fn editable_message(
 > {
     let id = raw_id
         .parse::<ai_memory_core::MessageId>()
-        .map_err(|_| error(StatusCode::BAD_REQUEST, "That is not a message id."))?;
+        .map_err(|_| error(StatusCode::BAD_REQUEST, "Isso não é um id de mensagem."))?;
     let target = lookup_existing_scope_guarded(
         &state.reader,
         &input.workspace,
@@ -499,7 +499,7 @@ async fn editable_message(
         .ok_or_else(|| {
             error(
                 StatusCode::NOT_FOUND,
-                "That message is not in this mailbox.",
+                "Essa mensagem não está nesta caixa.",
             )
         })?;
     let visible = state
@@ -513,7 +513,7 @@ async fn editable_message(
     }) else {
         return Err(error(
             StatusCode::FORBIDDEN,
-            "You cannot edit mail sent from a project you cannot write to.",
+            "Você não pode editar mensagens enviadas de um projeto em que não pode escrever.",
         ));
     };
     lookup_existing_scope_guarded(
@@ -560,7 +560,7 @@ pub(crate) async fn begin_edit(
         .into_response(),
         Ok(None) => error(
             StatusCode::CONFLICT,
-            "An agent already collected this message, or it is no longer queued.",
+            "Um agente já coletou esta mensagem, ou ela não está mais na fila.",
         ),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
@@ -590,7 +590,7 @@ pub(crate) async fn save_edit(
     if body.trim().is_empty() || body.chars().count() > 8_000 || subject.chars().count() > 200 {
         return error(
             StatusCode::BAD_REQUEST,
-            "Enter a message up to 8,000 characters and a subject up to 200 characters.",
+            "Informe uma mensagem de até 8.000 caracteres e um assunto de até 200 caracteres.",
         );
     }
     let actor = actor.map_or_else(ActorContext::anonymous, |a| a.0);
@@ -610,13 +610,13 @@ pub(crate) async fn save_edit(
             .into_response(),
         Ok(false) => error(
             StatusCode::CONFLICT,
-            "This message is no longer being edited.",
+            "Esta mensagem não está mais em edição.",
         ),
         Err(e) => {
             tracing::warn!(error=%e,"browser message edit refused");
             error(
                 StatusCode::FORBIDDEN,
-                "The message could not be saved. Check project access and message admission policy.",
+                "A mensagem não pôde ser salva. Verifique o acesso ao projeto e a política de admissão de mensagens.",
             )
         }
     }
@@ -649,7 +649,7 @@ pub(crate) async fn release_edit(
             .into_response(),
         Ok(false) => error(
             StatusCode::CONFLICT,
-            "This message is no longer being edited.",
+            "Esta mensagem não está mais em edição.",
         ),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }

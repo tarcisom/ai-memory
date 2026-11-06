@@ -173,8 +173,8 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
             "hook_shed",
             CheckStatus::Warn,
             format!(
-                "{shed} hook event(s) were answered 429 since the server started \
-                 ({} saturated, {} rate-limited); clients spool and retry them.",
+                "{shed} evento(s) de hook receberam 429 desde que o servidor iniciou \
+                 ({} saturados, {} limitados por taxa); os clientes os guardam no spool e tentam de novo.",
                 s.ingest.shed_saturated, s.ingest.shed_rate_limited
             ),
             None,
@@ -185,7 +185,7 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
             "hook_failed",
             CheckStatus::Error,
             format!(
-                "{} hook delivery(ies) failed to store since the server started.",
+                "{} entrega(s) de hook falharam ao gravar desde que o servidor iniciou.",
                 s.ingest.failed
             ),
             None,
@@ -198,7 +198,7 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
         push(
             "write_queue",
             CheckStatus::Warn,
-            format!("The write queue holds {queued} of {capacity} commands."),
+            format!("A fila de gravação tem {queued} de {capacity} comandos."),
             None,
         );
     }
@@ -208,8 +208,8 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
                 "spool_evicting",
                 CheckStatus::Error,
                 format!(
-                    "The hook spool is full ({} events): newly captured events are dropped \
-                     until space is available.",
+                    "O spool de hooks está cheio ({} eventos): novos eventos capturados são descartados \
+                     até haver espaço.",
                     spool.pending
                 ),
                 Some(fix_lines::RECOVER),
@@ -219,11 +219,11 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
                 "spool_pending",
                 CheckStatus::Warn,
                 format!(
-                    "{} hook event(s) wait in the local spool and delivery looks stuck \
-                     (oldest {}, {} failed attempt(s)).",
+                    "{} evento(s) de hook aguardam no spool local e a entrega parece travada \
+                     (mais antigo {}, {} tentativa(s) falha(s)).",
                     spool.pending,
                     spool.oldest_age_ms.map_or_else(
-                        || "age unknown".to_owned(),
+                        || "idade desconhecida".to_owned(),
                         |ms| format!("{} min", ms / 60_000)
                     ),
                     spool.retries_total
@@ -237,7 +237,7 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
             push(
                 "journal_unreadable",
                 CheckStatus::Error,
-                "The recovery journal could not be read.".to_owned(),
+                "O diário de recuperação não pôde ser lido.".to_owned(),
                 Some(fix_lines::RECOVER),
             );
         } else if journal.pending > 0 {
@@ -245,7 +245,7 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
                 "journal_pending",
                 CheckStatus::Warn,
                 format!(
-                    "{} run(s) wait in the recovery journal ({} degraded, {} finish-failed).",
+                    "{} execução(ões) aguardam no diário de recuperação ({} degradadas, {} com falha na finalização).",
                     journal.pending, journal.degraded, journal.finish_failed
                 ),
                 Some(fix_lines::RECOVER),
@@ -257,7 +257,7 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
             "llm_provider",
             CheckStatus::Error,
             format!(
-                "The LLM provider's last call failed{}.",
+                "A última chamada ao provedor de LLM falhou{}.",
                 s.providers
                     .llm
                     .last_error_status
@@ -272,8 +272,8 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
             "embedding_provider",
             CheckStatus::Error,
             format!(
-                "The embedding provider's last call failed{}; searches run without the \
-                 vector stream until it answers.",
+                "A última chamada ao provedor de embedding falhou{}; as buscas rodam sem o \
+                 fluxo vetorial até ele responder.",
                 s.providers
                     .embedding
                     .last_error_status
@@ -300,8 +300,8 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
                 "stale_vectors",
                 CheckStatus::Warn,
                 format!(
-                    "{stale} stored vector(s) were made under another provider, model or \
-                     dimension and are ignored."
+                    "{stale} vetor(es) armazenado(s) foram gerados com outro provedor, modelo ou \
+                     dimensão e são ignorados."
                 ),
                 Some(fix_lines::EMBED_FORCE),
             );
@@ -313,8 +313,8 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
                 "missing_vectors",
                 CheckStatus::Warn,
                 format!(
-                    "{missing} latest page(s) have no vector ({failed} after a failed or \
-                     skipped embed)."
+                    "{missing} página(s) recente(s) não têm vetor ({failed} após um embed \
+                     falho ou pulado)."
                 ),
                 Some(fix_lines::EMBED),
             );
@@ -325,8 +325,8 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
             "storage_reclaim",
             CheckStatus::Warn,
             format!(
-                "{} of the {}-byte database is reclaimable; compacting blocks writes while \
-                 it runs.",
+                "{} dos {} bytes do banco de dados são recuperáveis; a compactação bloqueia \
+                 gravações enquanto roda.",
                 s.storage.reclaimable_bytes, s.storage.database_bytes
             ),
             Some(fix_lines::COMPACT),
@@ -337,7 +337,7 @@ pub fn checks(s: &HealthSnapshot) -> Vec<HealthCheck> {
             "consolidation_failed",
             CheckStatus::Warn,
             format!(
-                "{} session consolidation job(s) gave up after their retries.",
+                "{} tarefa(s) de consolidação de sessão desistiram após as tentativas.",
                 s.consolidation.failed
             ),
             None,
@@ -548,7 +548,11 @@ mod tests {
         ];
         let check = only(&snapshot);
         assert_eq!(check.id, "stale_vectors");
-        assert!(check.detail.starts_with("5 stored"), "{}", check.detail);
+        assert!(
+            check.detail.starts_with("5 vetor(es) armazenado(s)"),
+            "{}",
+            check.detail
+        );
         assert_eq!(check.fix.as_deref(), Some(fix_lines::EMBED_FORCE));
     }
 

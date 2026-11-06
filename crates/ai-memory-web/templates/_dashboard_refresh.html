@@ -17,7 +17,7 @@
       if(stopped||location.href!==url)return;
       var page=new DOMParser().parseFromString(await response.text(),"text/html");
       apply(page,false);
-    }catch(_){document.getElementById("token-refresh-status").textContent="Update unavailable. Showing the last received values.";}
+    }catch(_){document.getElementById("token-refresh-status").textContent="Atualização indisponível. Mostrando os últimos valores recebidos.";}
     finally{clearTimeout(timeout);busy=false;if(!stopped){clearTimeout(timer);timer=setTimeout(refresh,10000);}}
   }
   timer=setTimeout(refresh,10000);

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>ai-memory setup</title>
+<title>Configuração do ai-memory</title>
 <style nonce="__NONCE__">
 :root {
   --bg: #fafaf9; --fg: #1c1917; --muted: #57534e; --line: #e7e5e4;
@@ -50,48 +50,48 @@ pre#log { background: var(--bg); border: 1px solid var(--line); border-radius: 8
 </head>
 <body>
 <main>
-  <h1>ai-memory setup</h1>
-  <p class="lead">Check the plan, choose your agents, and apply. Nothing changes until you press Apply.</p>
-  <p id="loading" class="note">Loading the plan…</p>
+  <h1>Configuração do ai-memory</h1>
+  <p class="lead">Confira o plano, escolha seus agentes e aplique. Nada muda até você clicar em Aplicar.</p>
+  <p id="loading" class="note">Carregando o plano…</p>
   <p id="failed" class="result bad" hidden></p>
 
   <div id="plan" hidden>
     <section>
-      <h2>Install</h2>
+      <h2>Instalação</h2>
       <dl>
-        <dt>Data dir</dt><dd><code id="data-dir"></code></dd>
-        <dt>Config</dt><dd><code id="config-path"></code></dd>
-        <dt>State</dt><dd id="fresh"></dd>
-        <dt>Service</dt><dd id="service"></dd>
+        <dt>Diretório de dados</dt><dd><code id="data-dir"></code></dd>
+        <dt>Configuração</dt><dd><code id="config-path"></code></dd>
+        <dt>Estado</dt><dd id="fresh"></dd>
+        <dt>Serviço</dt><dd id="service"></dd>
       </dl>
     </section>
 
     <section>
-      <h2>Agents</h2>
+      <h2>Agentes</h2>
       <div id="agents"></div>
-      <p id="no-agents" class="note" hidden>No agent was detected. Pick one below.</p>
+      <p id="no-agents" class="note" hidden>Nenhum agente foi detectado. Escolha um abaixo.</p>
       <details id="others-box">
-        <summary>Other supported agents</summary>
+        <summary>Outros agentes suportados</summary>
         <div class="others" id="others"></div>
       </details>
     </section>
 
     <section>
       <div class="actions">
-        <button id="apply" type="button">Apply</button>
-        <span class="note">Runs <code>ai-memory setup --yes</code> with the agents you picked, then checks the result.</span>
+        <button id="apply" type="button">Aplicar</button>
+        <span class="note">Executa <code>ai-memory setup --yes</code> com os agentes escolhidos e depois verifica o resultado.</span>
       </div>
       <pre id="log" hidden></pre>
       <div id="outcome" hidden>
         <p id="result" class="result"></p>
-        <p id="next" hidden>Restart <span id="restart"></span>, then ask it:<br><span class="question" id="question"></span></p>
+        <p id="next" hidden>Reinicie <span id="restart"></span> e então pergunte a ele:<br><span class="question" id="question"></span></p>
       </div>
       <div class="actions" id="finish-row" hidden>
-        <button id="finish" class="secondary" type="button">Finish and close the setup server</button>
+        <button id="finish" class="secondary" type="button">Concluir e fechar o servidor de configuração</button>
       </div>
     </section>
   </div>
-  <p id="closed" class="note" hidden>The setup server has stopped. You can close this tab.</p>
+  <p id="closed" class="note" hidden>O servidor de configuração foi encerrado. Você pode fechar esta aba.</p>
 </main>
 <script nonce="__NONCE__">
 (function () {
@@ -102,13 +102,13 @@ pre#log { background: var(--bg); border: 1px solid var(--line); border-radius: 8
   var text = function (id, value) { $(id).textContent = value; };
 
   function describeFound(found) {
-    if (!found) return "named on the command line";
-    var what = { session_store: "session store", mcp_config: "MCP config", config_dir: "directory" }[found.kind] || found.kind;
-    return "found its " + what + " at " + found.path;
+    if (!found) return "informado na linha de comando";
+    var what = { session_store: "armazenamento de sessões", mcp_config: "configuração MCP", config_dir: "diretório" }[found.kind] || found.kind;
+    return "encontrado via " + what + ": " + found.path;
   }
 
   function wiring(value) {
-    return { plugin: "left to its enabled ai-memory plugin", "mcp+hooks+skills": "MCP + hooks + skills", "hooks+skills": "hooks + skills" }[value] || value;
+    return { plugin: "a cargo do plugin ai-memory já habilitado", "mcp+hooks+skills": "MCP + hooks + skills", "hooks+skills": "hooks + skills" }[value] || value;
   }
 
   function checkbox(name, checked) {
@@ -125,9 +125,9 @@ pre#log { background: var(--bg); border: 1px solid var(--line); border-radius: 8
     csrf = doc.csrf;
     text("data-dir", plan.data_dir);
     text("config-path", plan.config_path);
-    text("fresh", plan.fresh ? "new install: creates the data dir, the config and a root bearer token" : "existing install: kept as it is");
+    text("fresh", plan.fresh ? "instalação nova: cria o diretório de dados, a configuração e um token Bearer root" : "instalação existente: mantida como está");
     text("service", plan.service.action === "install"
-      ? "install and start a " + plan.service.manager + " at " + plan.service.path
+      ? "instalar e iniciar um " + plan.service.manager + " em " + plan.service.path
       : plan.service.reason);
     var agents = $("agents");
     plan.agents.forEach(function (agent) {
@@ -188,12 +188,12 @@ pre#log { background: var(--bg); border: 1px solid var(--line); border-radius: 8
       var result = $("result");
       if (p.ok) {
         result.className = "result ok";
-        result.textContent = "ai-memory is set up.";
+        result.textContent = "O ai-memory está configurado.";
         text("restart", p.agents.join(", "));
         $("next").hidden = p.agents.length === 0;
       } else {
         result.className = "result bad";
-        result.textContent = "Setup finished with problems; see the lines starting with \"problem:\" above, fix them, and apply again.";
+        result.textContent = "A configuração terminou com problemas; veja as linhas que começam com \"problem:\" acima, corrija-as e aplique novamente.";
         $("apply").disabled = false;
       }
       $("finish-row").hidden = false;
@@ -202,7 +202,7 @@ pre#log { background: var(--bg); border: 1px solid var(--line); border-radius: 8
 
   $("apply").addEventListener("click", function () {
     var agents = chosen();
-    if (agents.length === 0) { fail("Pick at least one agent."); return; }
+    if (agents.length === 0) { fail("Escolha pelo menos um agente."); return; }
     $("failed").hidden = true;
     $("apply").disabled = true;
     $("log").hidden = false;
@@ -210,8 +210,8 @@ pre#log { background: var(--bg); border: 1px solid var(--line); border-radius: 8
     $("outcome").hidden = true;
     post("apply", { agents: agents }).then(function (r) {
       if (r.status === 202) { poll(0); return; }
-      return r.text().then(function (body) { fail(body || ("The server answered " + r.status)); $("apply").disabled = false; });
-    }).catch(function () { fail("The setup server did not answer."); $("apply").disabled = false; });
+      return r.text().then(function (body) { fail(body || ("O servidor respondeu " + r.status)); $("apply").disabled = false; });
+    }).catch(function () { fail("O servidor de configuração não respondeu."); $("apply").disabled = false; });
   });
 
   $("finish").addEventListener("click", function () {
@@ -226,7 +226,7 @@ pre#log { background: var(--bg); border: 1px solid var(--line); border-radius: 8
     return r.json();
   }).then(render).catch(function (error) {
     $("loading").hidden = true;
-    fail("Could not load the plan (" + error.message + "). Is `ai-memory setup --web` still running?");
+    fail("Não foi possível carregar o plano (" + error.message + "). O `ai-memory setup --web` ainda está em execução?");
   });
 })();
 </script>

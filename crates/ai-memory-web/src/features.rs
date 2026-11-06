@@ -62,9 +62,9 @@ pub(crate) async fn states(
     let mut push = |id, title, status, detail, next_step, guide, private| {
         rows.push(if private && !admin {
             FeatureState {
-                id, title, state: "Restricted",
-                detail: "Administrator access is required to inspect this installation setting.",
-                next_step: "Ask the administrator to inspect this feature. The guide remains available.",
+                id, title, state: "Restrito",
+                detail: "É preciso acesso de administrador para inspecionar esta configuração da instalação.",
+                next_step: "Peça ao administrador para inspecionar este recurso. O guia continua disponível.",
                 guide,
             }
         } else {
@@ -73,101 +73,101 @@ pub(crate) async fn states(
     };
     push(
         "knowledge",
-        "Verifiable knowledge",
-        "Available",
-        "Page sources, declared contradictions, validity and recall explanations use the current index and your source permissions.",
-        "Open a page, then inspect Knowledge evidence or arrive through a search result.",
+        "Conhecimento verificável",
+        "Disponível",
+        "Fontes das páginas, contradições declaradas, validade e explicações de recall usam o índice atual e suas permissões sobre as fontes.",
+        "Abra uma página e inspecione as evidências de Conhecimento, ou chegue por um resultado de busca.",
         "features#recall-project-routing-and-memory-pages",
         false,
     );
     push(
         "capture",
-        "Lifecycle capture",
+        "Captura de ciclo de vida",
         if state.ingest_metrics.is_some() {
-            "Server ready; client setup unknown"
+            "Servidor pronto; configuração do cliente desconhecida"
         } else {
-            "Not reported"
+            "Não informado"
         },
-        "A server cannot verify hooks installed on every agent machine.",
-        "Install the native client and hooks on each agent machine; run a captured session and inspect its events.",
+        "Um servidor não consegue verificar os hooks instalados em cada máquina de agente.",
+        "Instale o cliente nativo e os hooks em cada máquina de agente; rode uma sessão capturada e inspecione seus eventos.",
         "features#capture-and-agent-integration",
         false,
     );
     push(
         "tokens",
-        "Response token investigation",
-        "Client reports required",
-        "The server accepts bounded usage and provenance reports. Older clients and missing transcripts leave unknown data.",
-        "Update each native client, then use UTC, model, harness and session filters in Token usage.",
+        "Investigação de tokens por resposta",
+        "Relatórios do cliente necessários",
+        "O servidor aceita relatórios limitados de uso e proveniência. Clientes antigos e transcrições ausentes deixam dados desconhecidos.",
+        "Atualize cada cliente nativo e use os filtros de UTC, modelo, harness e sessão em Uso de tokens.",
         "features#token-accounting-and-investigation",
         false,
     );
     push(
         "themes",
-        "Themes and responsive navigation",
-        "Browser preference",
-        "Theme selection is local to this browser; persistence depends on browser storage.",
-        "Choose light, dark or system in the navigation controls.",
+        "Temas e navegação responsiva",
+        "Preferência do navegador",
+        "A escolha do tema é local a este navegador; a persistência depende do armazenamento do navegador.",
+        "Escolha claro, escuro ou sistema nos controles de navegação.",
         "features#themes-and-responsive-navigation",
         false,
     );
     push(
         "inbox",
-        "Agent inbox",
-        "Project permissions apply",
-        "Reading follows project access. Sending requires write access to both project coordinates and a registered recipient.",
-        "Open Inbox, select the source and destination projects, then choose an agent.",
+        "Caixa de entrada de agentes",
+        "Permissões do projeto se aplicam",
+        "A leitura segue o acesso ao projeto. Enviar exige acesso de escrita às duas coordenadas de projeto e um destinatário registrado.",
+        "Abra a Caixa de entrada, selecione os projetos de origem e destino e escolha um agente.",
         "features#agent-inbox-and-directed-messages",
         false,
     );
     push(
         "handoffs",
-        "Handoffs and recovery",
-        "Project and owner permissions apply",
-        "A handoff is collected explicitly by its owner. Reading the dashboard does not claim one.",
-        "Use the handoff commands from the selected repository and inspect the recovery guide.",
+        "Handoffs e recuperação",
+        "Permissões de projeto e de dono se aplicam",
+        "Um handoff é coletado explicitamente pelo seu dono. Ler o painel não reivindica nenhum.",
+        "Use os comandos de handoff a partir do repositório selecionado e consulte o guia de recuperação.",
         "features#handoffs-and-compaction-recovery",
         false,
     );
     push(
         "workstreams",
-        "Managed sessions and workstreams",
-        "Available to administrator",
-        "The server ledger is available; launch and checkout discovery happen on the client machine.",
-        "Use ai-memory run on the agent machine; inspect Workstreams for recorded activity.",
+        "Sessões gerenciadas e workstreams",
+        "Disponível para o administrador",
+        "O livro-razão do servidor está disponível; o lançamento e a descoberta de checkouts acontecem na máquina do cliente.",
+        "Use ai-memory run na máquina do agente; inspecione Workstreams para ver a atividade registrada.",
         "features#managed-sessions-and-workstreams",
         true,
     );
     push(
         "embeddings",
-        "Vector retrieval",
+        "Recuperação vetorial",
         if state.recall.embedder.is_some() {
-            "Configured"
+            "Configurado"
         } else {
-            "Not configured"
+            "Não configurado"
         },
-        "Lexical retrieval remains available. A configured embedder is not proof that a provider is currently healthy.",
+        "A recuperação lexical continua disponível. Um embedder configurado não prova que o provedor está saudável agora.",
         if admin {
-            "Configure an embedding provider, embed the project and inspect Health for failures."
+            "Configure um provedor de embedding, vetorize o projeto e inspecione Saúde em busca de falhas."
         } else {
-            "Ask the administrator to configure embeddings if lexical retrieval is insufficient."
+            "Peça ao administrador para configurar embeddings se a recuperação lexical não for suficiente."
         },
         "features#embeddings-and-reranking",
         false,
     );
     push(
         "reranking",
-        "Search reranking",
+        "Reranking da busca",
         if state.recall.rerank.is_some() {
-            "Configured"
+            "Configurado"
         } else {
-            "Not configured"
+            "Não configurado"
         },
-        "This reflects the actual reranker shared by web and MCP search.",
+        "Isto reflete o reranker real compartilhado pela busca web e MCP.",
         if admin {
-            "Configure the reranker and verify a project query with its recall explanation."
+            "Configure o reranker e verifique uma consulta de projeto com sua explicação de recall."
         } else {
-            "Use project search; ask the administrator about optional reranking."
+            "Use a busca do projeto; pergunte ao administrador sobre o reranking opcional."
         },
         "features#embeddings-and-reranking",
         false,
@@ -175,111 +175,111 @@ pub(crate) async fn states(
     if let Some(r) = runtime {
         push(
             "consolidation",
-            "Session consolidation",
+            "Consolidação de sessão",
             if r.consolidate_on_session_end {
-                "Enabled on session end"
+                "Habilitada ao fim da sessão"
             } else {
-                "Manual only"
+                "Somente manual"
             },
             if r.llm_configured {
-                "An LLM provider was constructed; provider health is checked separately."
+                "Um provedor de LLM foi construído; a saúde do provedor é verificada separadamente."
             } else {
-                "No LLM provider is configured. Rule-based summaries remain available."
+                "Nenhum provedor de LLM está configurado. Resumos baseados em regras continuam disponíveis."
             },
-            "Inspect consolidate_on_session_end and provider configuration, then verify a completed session.",
+            "Inspecione consolidate_on_session_end e a configuração do provedor; depois verifique uma sessão concluída.",
             "features#llm-consolidation-and-provider-fallback",
             true,
         );
         push(
             "learning",
-            "Automatic learning",
+            "Aprendizado automático",
             if !r.llm_configured {
-                "Unavailable without LLM"
+                "Indisponível sem LLM"
             } else if r.learning_scheduled || r.learning_on_session_end {
-                "Scheduled"
+                "Agendado"
             } else {
-                "Manual only"
+                "Somente manual"
             },
-            "Effective scheduling accounts for the enabled flag, nonzero interval and batch size.",
-            "Configure the LLM and auto_improve scheduler or on_session_end; inspect Learning review.",
+            "O agendamento efetivo considera a flag de habilitação, o intervalo não nulo e o tamanho do lote.",
+            "Configure o LLM e o agendador auto_improve ou on_session_end; inspecione a revisão de Aprendizado.",
             "features#learning-and-proposal-review",
             true,
         );
         push(
             "review",
-            "Proposal approval",
+            "Aprovação de propostas",
             if r.review_requires_approval {
-                "Manual approval required"
+                "Aprovação manual obrigatória"
             } else {
-                "Automatic approval configured"
+                "Aprovação automática configurada"
             },
-            "This is the configured policy for validated proposals, not a count of pending proposals.",
-            "Review the pending-writes audit trail; set auto_improve.require_approval to change the policy.",
+            "Esta é a política configurada para propostas validadas, não uma contagem de propostas pendentes.",
+            "Revise a trilha de auditoria de pending-writes; ajuste auto_improve.require_approval para mudar a política.",
             "features#learning-and-proposal-review",
             true,
         );
         push(
             "assistant",
-            "Assistant-text capture default",
+            "Padrão de captura do texto do assistente",
             if r.capture_assistant_default {
-                "Default enabled"
+                "Habilitado por padrão"
             } else {
-                "Default disabled"
+                "Desabilitado por padrão"
             },
-            "A client can opt in separately; capture exclusions still apply.",
-            "Inspect capture_assistant and the installed client's capture options.",
+            "Um cliente pode optar separadamente; as exclusões de captura continuam valendo.",
+            "Inspecione capture_assistant e as opções de captura do cliente instalado.",
             "features#capture-exclusions-and-assistant-text",
             true,
         );
         push(
             "backfill",
-            "Startup recovery default",
+            "Padrão de recuperação na inicialização",
             if r.backfill_on_start {
-                "Default enabled"
+                "Habilitado por padrão"
             } else {
-                "Default disabled"
+                "Desabilitado por padrão"
             },
-            "This startup setting does not attest to hooks installed on remote clients.",
-            "Inspect backfill_on_start and use the recovery guide on the affected machine.",
+            "Esta configuração de inicialização não atesta os hooks instalados em clientes remotos.",
+            "Inspecione backfill_on_start e use o guia de recuperação na máquina afetada.",
             "features#handoffs-and-compaction-recovery",
             true,
         );
         push(
             "retention",
-            "Scheduled retention",
+            "Retenção agendada",
             if r.maintenance_enabled && r.retention_scheduled {
-                "Scheduled"
+                "Agendada"
             } else {
-                "Disabled"
+                "Desabilitada"
             },
-            "The effective maintenance switch and nonzero sweep interval control scheduling.",
-            "Inspect maintenance and retention settings; make an online backup before lifecycle operations.",
+            "A chave efetiva de manutenção e o intervalo de varredura não nulo controlam o agendamento.",
+            "Inspecione as configurações de manutenção e retenção; faça um backup online antes de operações de ciclo de vida.",
             "features#backup-retention-and-deployment",
             true,
         );
         push(
             "human-login",
-            "Human account login",
+            "Login com conta humana",
             if r.human_login {
-                "Enabled at startup"
+                "Habilitado na inicialização"
             } else {
-                "Not enabled at startup"
+                "Não habilitado na inicialização"
             },
-            "This reports the startup auth mode. Current identity and permissions are evaluated for this request.",
-            "Use the authentication setup guide and administrator status to manage credentials.",
+            "Isto informa o modo de autenticação da inicialização. A identidade e as permissões atuais são avaliadas para esta requisição.",
+            "Use o guia de configuração de autenticação e o status de administrador para gerenciar credenciais.",
             "features#authentication-team-access-and-the-management-console",
             true,
         );
         push(
             "observation-recall",
-            "Observation-evidence retrieval",
+            "Recuperação por evidências de observação",
             if r.observation_stream {
-                "Enabled"
+                "Habilitada"
             } else {
-                "Disabled"
+                "Desabilitada"
             },
-            "This is the effective retrieval.observation_stream switch loaded at startup.",
-            "Inspect a project query's recall trace; configure retrieval.observation_stream to change the stream.",
+            "Esta é a chave efetiva retrieval.observation_stream carregada na inicialização.",
+            "Inspecione o rastro de recall de uma consulta de projeto; configure retrieval.observation_stream para mudar o fluxo.",
             "features#recall-project-routing-and-memory-pages",
             false,
         );
@@ -287,51 +287,51 @@ pub(crate) async fn states(
         for (id, title, guide) in [
             (
                 "consolidation",
-                "Session consolidation",
+                "Consolidação de sessão",
                 "features#llm-consolidation-and-provider-fallback",
             ),
             (
                 "learning",
-                "Automatic learning",
+                "Aprendizado automático",
                 "features#learning-and-proposal-review",
             ),
             (
                 "review",
-                "Proposal approval",
+                "Aprovação de propostas",
                 "features#learning-and-proposal-review",
             ),
             (
                 "assistant",
-                "Assistant-text capture default",
+                "Padrão de captura do texto do assistente",
                 "features#capture-exclusions-and-assistant-text",
             ),
             (
                 "backfill",
-                "Startup recovery default",
+                "Padrão de recuperação na inicialização",
                 "features#handoffs-and-compaction-recovery",
             ),
             (
                 "retention",
-                "Scheduled retention",
+                "Retenção agendada",
                 "features#backup-retention-and-deployment",
             ),
             (
                 "human-login",
-                "Human account login",
+                "Login com conta humana",
                 "features#authentication-team-access-and-the-management-console",
             ),
             (
                 "observation-recall",
-                "Observation-evidence retrieval",
+                "Recuperação por evidências de observação",
                 "features#recall-project-routing-and-memory-pages",
             ),
         ] {
             push(
                 id,
                 title,
-                "Not reported",
-                "The hosting process did not provide its effective startup settings.",
-                "Ask the administrator to use a server build that publishes the safe runtime snapshot.",
+                "Não informado",
+                "O processo hospedeiro não forneceu suas configurações efetivas de inicialização.",
+                "Peça ao administrador para usar uma build do servidor que publique o retrato seguro do runtime.",
                 guide,
                 id != "observation-recall",
             );
@@ -339,41 +339,41 @@ pub(crate) async fn states(
     }
     push(
         "management",
-        "Management console",
+        "Console de gerenciamento",
         if cfg!(feature = "management-ui") {
-            "Included in this build"
+            "Incluído nesta build"
         } else {
-            "Not included in this build"
+            "Não incluído nesta build"
         },
-        "Administrative access is required independently of build support.",
-        "Use the administrator CLI/API, or deploy a build with the management-ui feature.",
+        "O acesso administrativo é exigido independentemente do suporte da build.",
+        "Use a CLI/API de administrador, ou implante uma build com o recurso management-ui.",
         "features#authentication-team-access-and-the-management-console",
         true,
     );
     push(
         "external-clients",
-        "External agent clients",
-        "Client setup unknown",
-        "Remote client versions and per-project marker files cannot be inferred from this server.",
-        "Run install-hooks and doctor on each client; check a captured session in the target project.",
+        "Clientes de agente externos",
+        "Configuração do cliente desconhecida",
+        "As versões dos clientes remotos e os arquivos marcadores por projeto não podem ser inferidos a partir deste servidor.",
+        "Rode install-hooks e doctor em cada cliente; confira uma sessão capturada no projeto de destino.",
         "features#external-clients-and-lifecycle-capture",
         false,
     );
     push(
         "capture-policy",
-        "Capture exclusions",
-        "Client/project configuration",
-        "Each client reads its nearest marker. The server does not read remote repository files.",
-        "Inspect capture.ignore_paths in that repository's .ai-memory.toml and verify excluded events stay absent.",
+        "Exclusões de captura",
+        "Configuração do cliente/projeto",
+        "Cada cliente lê seu marcador mais próximo. O servidor não lê arquivos de repositórios remotos.",
+        "Inspecione capture.ignore_paths no .ai-memory.toml desse repositório e verifique que os eventos excluídos continuam ausentes.",
         "features#capture-exclusions-and-assistant-text",
         false,
     );
     push(
         "documentation",
-        "Documentation and changelogs",
-        "Available",
-        "Guides are bundled with this server build; installation states are separate from those reference pages.",
-        "Use Markdown or the authenticated docs API for agent-readable references.",
+        "Documentação e changelogs",
+        "Disponível",
+        "Os guias vêm embutidos nesta build do servidor; os estados da instalação são separados dessas páginas de referência.",
+        "Use Markdown ou a API de docs autenticada para referências legíveis por agentes.",
         "features#documentation-and-changelog-access-for-agents",
         false,
     );

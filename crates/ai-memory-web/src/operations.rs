@@ -65,7 +65,7 @@ pub(crate) fn session_row(s: SessionSummary, workspace: &str, project: &str) -> 
             .as_ref()
             .map(|u| {
                 format!(
-                    "{} in / {} out",
+                    "{} entrada / {} saída",
                     fmt_tokens(u.input_tokens),
                     fmt_tokens(u.output_tokens)
                 )
@@ -293,11 +293,11 @@ pub(crate) fn usage_panel(
                 let context = c.input + c.cache_read + c.cache_write;
                 let total = context + c.output;
                 let signal = if report.call_count >= 5 && total > mean.saturating_mul(3) {
-                    "Above 3× average"
+                    "Acima de 3× a média"
                 } else if context >= 100_000 {
-                    "Large context"
+                    "Contexto grande"
                 } else if c.output >= 20_000 {
-                    "Long output"
+                    "Saída longa"
                 } else {
                     "—"
                 };
@@ -316,13 +316,13 @@ pub(crate) fn usage_panel(
                             name: t.name,
                             relation: match t.relation {
                                 ai_memory_core::TokenToolRelation::Requested => {
-                                    "Requested by this response"
+                                    "Solicitada por esta resposta"
                                 }
                                 ai_memory_core::TokenToolRelation::Input => {
-                                    "Result supplied to this response"
+                                    "Resultado fornecido a esta resposta"
                                 }
                                 ai_memory_core::TokenToolRelation::Turn => {
-                                    "Recorded in the same turn (association)"
+                                    "Registrada no mesmo turno (associação)"
                                 }
                             },
                             is_error: t.is_error,
@@ -340,9 +340,9 @@ pub(crate) fn usage_panel(
                     response_native: c.response_id.unwrap_or_default(),
                     session: c.session_id.clone(),
                     time_basis: if c.response_at.is_some() {
-                        "Reported response time"
+                        "Horário de resposta informado"
                     } else {
-                        "Capture time; response time unknown"
+                        "Horário de captura; horário de resposta desconhecido"
                     },
                     recorded_at: recorded_at.clone(),
                     tools,
@@ -355,7 +355,7 @@ pub(crate) fn usage_panel(
                     input: fmt_tokens(c.input),
                     output: fmt_tokens(c.output),
                     cache: format!(
-                        "{} read / {} write",
+                        "{} leitura / {} escrita",
                         fmt_tokens(c.cache_read),
                         fmt_tokens(c.cache_write)
                     ),

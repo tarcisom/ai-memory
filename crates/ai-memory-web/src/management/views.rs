@@ -143,15 +143,19 @@ impl ConsoleView {
                     .map(|u| User {
                         username: text(u, "username"),
                         name: text(u, "name"),
-                        role: if u["role"] == "root" { "Admin" } else { "User" },
+                        role: if u["role"] == "root" {
+                            "Administrador"
+                        } else {
+                            "Usuário"
+                        },
                         next_role: if u["role"] == "root" { "user" } else { "root" },
                         enabled: u["disabled_at"].is_null(),
                         status: if !u["disabled_at"].is_null() {
-                            "Disabled"
+                            "Desativado"
                         } else if u["must_change_password"] == true {
-                            "Password change required"
+                            "Troca de senha obrigatória"
                         } else {
-                            "Active"
+                            "Ativo"
                         },
                         keys: rows(&credentials, "credentials")
                             .iter()
@@ -199,7 +203,7 @@ impl ConsoleView {
             _ => {
                 return Err(super::failure(
                     axum::http::StatusCode::BAD_REQUEST,
-                    "Both workspace and project are required".into(),
+                    "Workspace e projeto são obrigatórios".into(),
                 ));
             }
         };
@@ -210,7 +214,7 @@ impl ConsoleView {
             let sid = selection.session.ok_or_else(|| {
                 super::failure(
                     axum::http::StatusCode::BAD_REQUEST,
-                    "Session ID required".into(),
+                    "ID da sessão obrigatório".into(),
                 )
             })?;
             self.session_id = sid.to_string();
@@ -239,14 +243,14 @@ impl ConsoleView {
                         agent: text(s, "agent_kind"),
                         started: text(s, "started_at"),
                         state: if s["ended_at"].is_null() {
-                            "Open"
+                            "Aberta"
                         } else {
-                            "Ended"
+                            "Encerrada"
                         },
                         count: s["observation_count"].as_u64().unwrap_or(0),
                         can_delete: me.admin || owner == format!("user:{}", me.username),
                         owner: if owner.is_empty() {
-                            "Shared".into()
+                            "Compartilhada".into()
                         } else {
                             owner
                         },
@@ -265,7 +269,7 @@ impl ConsoleView {
             .ok_or_else(|| {
                 super::failure(
                     axum::http::StatusCode::BAD_GATEWAY,
-                    "Missing pagination contract".into(),
+                    "Contrato de paginação ausente".into(),
                 )
             })?;
         if selection.offset > 0 {
@@ -309,16 +313,16 @@ impl ConsoleView {
         self.workspace = workspace;
         self.project = project;
         self.counts = [
-            ("Observations", "observations_deleted"),
+            ("Observações", "observations_deleted"),
             ("Handoffs", "handoffs_deleted"),
-            ("Page versions", "pages_deleted"),
-            ("Review runs", "auto_improve_runs_deleted"),
+            ("Versões de página", "pages_deleted"),
+            ("Execuções de revisão", "auto_improve_runs_deleted"),
             (
-                "Events in other projects",
+                "Eventos em outros projetos",
                 "collateral_observations_deleted",
             ),
             (
-                "Handoffs unlinked in other projects",
+                "Handoffs desvinculados em outros projetos",
                 "collateral_handoffs_denulled",
             ),
         ]
