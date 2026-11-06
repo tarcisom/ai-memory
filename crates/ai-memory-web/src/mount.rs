@@ -859,7 +859,7 @@ mod tests {
         // Archive present → dialog with restore steps + dismissal key.
         let body = body_of(&router).await;
         assert!(body.contains("okf-dialog-overlay"));
-        assert!(body.contains("upgraded to the 2.0 format"));
+        assert!(body.contains("atualizada para o formato 2.0"));
         assert!(body.contains("Não mostrar novamente"));
         assert!(
             body.contains("ai-memory-okf-dialog-2026-09-01T00:00:00Z"),
