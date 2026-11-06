@@ -43,7 +43,8 @@ jobs:
       - name: Tags da imagem
         id: meta
         run: |
-          VER=$(grep -m1 '^version' crates/ai-memory-cli/Cargo.toml | sed -E 's/.*"([^"]+)".*/\1/')
+          # versão do workspace (crates usam version.workspace = true)
+          VER=$(grep -m1 -E '^version *= *"' Cargo.toml | sed -E 's/.*"([^"]+)".*/\1/')
           SHORT=${GITHUB_SHA::7}
           echo "tags=ghcr.io/${{ github.repository }}:${VER}-ptbr,ghcr.io/${{ github.repository }}:${VER}-ptbr-${SHORT},ghcr.io/${{ github.repository }}:ptbr" >> "$GITHUB_OUTPUT"
           echo "versao=${VER}" >> "$GITHUB_OUTPUT"
