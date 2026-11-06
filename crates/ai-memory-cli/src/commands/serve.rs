@@ -7302,7 +7302,7 @@ mod tests {
             .await
             .unwrap();
         let html = std::str::from_utf8(&body).unwrap();
-        assert!(html.contains("Sign in"), "login page body: {html}");
+        assert!(html.contains("Entrar"), "login page body: {html}");
         assert!(
             html.contains("ai-memory-base-path"),
             "inject base-path meta"
@@ -7326,7 +7326,7 @@ mod tests {
             .unwrap();
         let change_html = std::str::from_utf8(&change_body).unwrap();
         assert!(
-            change_html.contains("Change password"),
+            change_html.contains("Alterar senha"),
             "change-password page body: {change_html}"
         );
 
