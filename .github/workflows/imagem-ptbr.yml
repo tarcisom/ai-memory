@@ -24,7 +24,7 @@ jobs:
           toolchain: '1.95'
       - uses: Swatinem/rust-cache@v2
       # A suíte integration:: confere frases em inglês renderizadas; na branch pt-br esses textos mudaram de propósito.
-      - run: cargo test --locked -p ai-memory-web -- --skip integration::
+      - run: "cargo test --locked -p ai-memory-web -- --skip integration::"
       - run: cargo test --locked -p ai-memory-cli --lib
 
   imagem:
